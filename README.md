@@ -1,5 +1,6 @@
-# hoermann-shelly
+# Öffnungsgrad von Hörmann Garangentor mit Shelly Plus Uni via MQTT senden
 
+## Shelly Script
 ```javascript
 function bleCallback(ev, res) {
     if (ev === BLE.Scanner.SCAN_RESULT && res.addr === "d3:3a:23:b4:f5:c9") {
@@ -20,4 +21,16 @@ if (!BLE.Scanner.isRunning()) {
 }
 
 BLE.Scanner.Subscribe(bleCallback);
+```
+
+## Home Assistant MQTT Sensor
+```yml
+mqtt:
+    sensor:
+        - name: 'Garage Öffnungsgrad'
+          object_id: 'shelly_hoermann'
+          availability_mode: latest
+          state_topic: 'shelly/hoermann/garagentor/offen'
+          unit_of_measurement: '%'
+          value_template: '{{ value_json }}'
 ```
